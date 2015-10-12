@@ -30,7 +30,7 @@ MESSAGE(STATUS ${LIBS})
 INCLUDE_DIRECTORIES(${HIDAPI_INCLUDE_DIR} ${Mcrypt_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/include)
 
 ADD_SUBDIRECTORY(src)
-#ADD_SUBDIRECTORY(include)
+ADD_SUBDIRECTORY(emokit)
 
 ##########################################
 ##       PKGCONFIG file                ###

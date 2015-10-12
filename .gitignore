@@ -3,6 +3,10 @@
 /src/CMakeFiles
 /src/cmake_install.cmake
 /src/MakeFile
+/emokit/CMakeFiles
+/emokit/cmake_install.cmake
+/emokit/MakeFile
 CMakeCache.txt
 cmake_install.cmake
 Makefile
+log_emokit.csv

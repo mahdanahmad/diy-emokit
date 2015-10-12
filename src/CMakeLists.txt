@@ -1,0 +1,25 @@
+add_executable (main main.c)
+ADD_DEPENDENCIES(main emokit)
+target_link_libraries (main emokit ${LIBS})
+
+SET_TARGET_PROPERTIES(main PROPERTIES
+INSTALL_RPATH_USE_LINK_PATH TRUE
+INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib
+BUILD_WITH_INSTALL_RPATH TRUE )
+
+INSTALL (TARGETS main
+RUNTIME DESTINATION bin
+)
+
+## add_executable (latihan debug.c)
+## ADD_DEPENDENCIES(latihan emokit)
+## target_link_libraries (latihan emokit ${LIBS})
+## 
+## SET_TARGET_PROPERTIES(latihan PROPERTIES
+## INSTALL_RPATH_USE_LINK_PATH TRUE
+## INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib
+## BUILD_WITH_INSTALL_RPATH TRUE )
+## 
+## INSTALL (TARGETS latihan
+## RUNTIME DESTINATION bin
+## )

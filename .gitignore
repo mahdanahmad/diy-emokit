@@ -1,4 +1,5 @@
 /bin
+/lib
 /CMakeFiles
 /src/CMakeFiles
 /src/cmake_install.cmake

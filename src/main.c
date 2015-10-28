@@ -1,10 +1,12 @@
 #include <time.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <signal.h>
 #include "emokit.h"
 
 int quit;
+
 void cleanup(int i){
 	fprintf(stdout,"Shutting down\n");
 	quit=1;
@@ -88,6 +90,7 @@ int main(int argc, char **argv)
         
         counter++;
 	}
+    
     clock_t second  = clock();
     
     long elapsed    = timediff(first, second);

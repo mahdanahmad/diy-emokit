@@ -12,7 +12,7 @@
 
 int quit;
 
-int dummy_data[DEF_COLUMN][DEF_ROW] = {
+double dummy_data[DEF_COLUMN][DEF_ROW] = {
     {8466,8102,9095,8454,8066,8440,8001,8428,8076,8943,8168,8876,8789,8036},
     {8455,8085,9104,8441,8060,8423,8010,8396,8069,8941,8160,8866,8788,8029},
     {8472,8084,9097,8448,8077,8409,8010,8368,8045,8912,8193,8820,8783,8041},
@@ -284,7 +284,7 @@ void cleanup(int i){
 	quit=1; 
 }
 
-int average(int array[][DEF_COLUMN]) {
+int average(double array[][DEF_COLUMN]) {
     int sum = 0;
     int counter = 0;
     int m, n;
@@ -298,7 +298,7 @@ int average(int array[][DEF_COLUMN]) {
     return (int)(sum / counter);
 }
 
-void centering(int array[][DEF_COLUMN], int avg) {
+void centering(double array[][DEF_COLUMN], int avg) {
     int m, n;
     
     for (m = 0; m < DEF_ROW; m++) {
@@ -308,7 +308,17 @@ void centering(int array[][DEF_COLUMN], int avg) {
     }
 }
 
-void init_dummy(int array[][DEF_COLUMN]) {
+void create_fftw_in(double *in, double array[][DEF_COLUMN]) {
+    int m, n;
+    
+    for (m = 0; m < DEF_ROW; m++) {
+        for (n = 0; n < DEF_COLUMN; n++) {
+            in[m * DEF_COLUMN + n] = array[m][n];
+        }
+    }
+}
+
+void init_dummy(double array[][DEF_COLUMN]) {
     int m, n;
     
     for (m = 0; m < DEF_ROW; m++) {
@@ -318,49 +328,69 @@ void init_dummy(int array[][DEF_COLUMN]) {
     }
 }
 
+void print_array(double array[][DEF_COLUMN]) {
+    int m, n;
+    
+    for (m = 0; m < DEF_ROW; m++) {
+        for (n = 0; n < DEF_COLUMN; n++) {
+            printf("%d, ", (int)array[m][n]);
+        }
+        printf("\n");
+    }
+}
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
 	struct emokit_device* device;
 	signal(SIGINT, cleanup); //trap cntrl c
     
     int m, n;
-    int data_array[DEF_ROW][DEF_COLUMN];
+    double data_array[DEF_ROW][DEF_COLUMN];
+    
+    int fftw_column = ( DEF_COLUMN / 2 ) + 1;
+    
+    double          *fftw_in    = ( double * ) malloc ( sizeof ( double ) * DEF_ROW * DEF_COLUMN );
+    fftw_complex    *fftw_out   = fftw_malloc ( sizeof ( fftw_complex ) * DEF_ROW * fftw_column );
+    fftw_plan       plan;
     
 	quit = 0;
     
     clock_t first   = clock();
     
     init_dummy(data_array);
-    
-    int row     = LENGTH(data_array);
-    int column  = LENGTH(data_array[0]);
-    
-//    printf("%d x %d\n", row, column);
-    
-//    for (m = 0; m < row; m++) {
-//        for (n = 0; n < column; n++) {
-//            printf("%d, ", data_array[m][n]);
-//        }
-//        printf("\n");
-//    }
-    
-//    printf("######################################################################################\n");
+//    print_array(data_array);
     
     int avg = average(data_array);
-    
 //    printf("Average : %d\n", avg);
     
-//    printf("######################################################################################\n");
     centering(data_array, avg);
-//    
-//    for (m = 0; m < row; m++) {
-//        for (n = 0; n < column; n++) {
-//            printf("%d, ", data_array[m][n]);
+//    print_array(data_array);
+    
+    create_fftw_in(fftw_in, data_array);
+//    for ( m = 0; m < DEF_ROW; m++ ) {
+//        for ( n = 0; n < DEF_COLUMN; n++ ) {
+//            printf ( "  %4d  %4d  %12f  %12f\n", m, n, fftw_in[m * DEF_COLUMN + n], data_array[m][n] );
 //        }
-//        printf("\n");
 //    }
     
+    
+    plan    =  fftw_plan_dft_r2c_2d(DEF_ROW, DEF_COLUMN, fftw_in, fftw_out, FFTW_ESTIMATE);
+    fftw_execute ( plan );
+    
+    printf ( "\n" );
+    printf ( "  Output FFT Coefficients:\n" );
+    printf ( "\n" );
+
+    for ( m = 0; m < DEF_ROW; m++ ) {
+        for ( n = 0; n < fftw_column; n++ ) {
+            printf ( "  %4d  %4d  %12f  %12f\n", 
+            m, n, fftw_out[m * fftw_column + n][0], fftw_out[m * fftw_column + n][1] );
+        }
+    }
+    
+    fftw_destroy_plan(plan);
+    free(fftw_in);
+    fftw_free(fftw_out);
+        
     clock_t second  = clock();
     
     long elapsed    = timediff(first, second);

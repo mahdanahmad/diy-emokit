@@ -19,6 +19,15 @@ FIND_PACKAGE(HIDAPI REQUIRED)
 
 SET(LIBS ${Mcrypt_LIBS} ${HIDAPI_LIBRARIES})
 
+find_library(FFTW_LIBRARY NAMES fftw3 fftw)
+set(FFTW_LIBRARIES "${FFTW_LIBRARY}")
+
+if(UNIX AND NOT WIN32)
+     find_library(FFTW_libm_LIBRARY
+         NAMES m)
+     list(APPEND FFTW_LIBRARIES "${FFTW_libm_LIBRARY}")
+endif()
+
 IF(LINUX)
 SET(LIBS ${LIBS} udev)
 ELSEIF(APPLE)

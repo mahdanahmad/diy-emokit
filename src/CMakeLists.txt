@@ -13,7 +13,7 @@ RUNTIME DESTINATION bin
 
 add_executable (latihan debug.c)
 ADD_DEPENDENCIES(latihan emokit)
-target_link_libraries (latihan emokit ${LIBS})
+target_link_libraries (latihan emokit ${LIBS} ${FFTW_LIBRARIES})
 
 SET_TARGET_PROPERTIES(latihan PROPERTIES
 INSTALL_RPATH_USE_LINK_PATH TRUE

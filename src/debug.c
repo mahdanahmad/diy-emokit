@@ -1,3 +1,4 @@
+#include <fftw3.h> 
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -326,10 +327,7 @@ int main(int argc, char **argv)
     int m, n;
     int data_array[DEF_ROW][DEF_COLUMN];
     
-    
-    
 	quit = 0;
-    
     
     clock_t first   = clock();
     
@@ -351,17 +349,17 @@ int main(int argc, char **argv)
     
     int avg = average(data_array);
     
-    printf("Average : %d\n", avg);
+//    printf("Average : %d\n", avg);
     
 //    printf("######################################################################################\n");
     centering(data_array, avg);
-    
-    for (m = 0; m < row; m++) {
-        for (n = 0; n < column; n++) {
-            printf("%d, ", data_array[m][n]);
-        }
-        printf("\n");
-    }
+//    
+//    for (m = 0; m < row; m++) {
+//        for (n = 0; n < column; n++) {
+//            printf("%d, ", data_array[m][n]);
+//        }
+//        printf("\n");
+//    }
     
     clock_t second  = clock();
     

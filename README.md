@@ -43,7 +43,7 @@ cd hidapid-master
 make
 sudo make install
 
-FFTW3
+FFTW
 You could install normal binary package from the repositories :
 sudo apt-get install libfftw3-dev
 
@@ -55,7 +55,7 @@ tar xzvf fftw-VERSION.tar.gz
 make
 sudo make install
 
-NOTE : CMAKE 3.3.2, MCRYPT 2.6.8, HIDAPI already available at working libs directory
+NOTE : CMAKE 3.3.2, MCRYPT 2.6.8, HIDAPI, FFTW 3.3.4 already available at working libs directory
 
 PROJECT
 sudo apt-get install liboscpack*
